@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "blank-typescript",
-    "slug": "blank-typescript",
+    "name": "Barber Mob",
+    "slug": "Barber Mob",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
-    "scheme": "blanktypescript",
+    "icon": "./assets/images/logo-oficial.jpg",
+    "scheme": "barbermob",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
@@ -33,9 +33,9 @@
           "image": "./assets/images/splash-icon.png",
           "imageWidth": 200,
           "resizeMode": "contain",
-          "backgroundColor": "#ffffff",
+          "backgroundColor": "#0F0F0F",
           "dark": {
-            "backgroundColor": "#000000"
+            "backgroundColor": "#0F0F0F"
           }
         }
       ]
