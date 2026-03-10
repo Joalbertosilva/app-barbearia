@@ -34,7 +34,7 @@ export default function ChooseService() {
     setError(null);
     setLoading(true);
     try {
-      const res = await api.get("/services"); // ajuste se necessário
+      const res = await api.get("/services"); 
       const data = res.data;
       const list = Array.isArray(data) ? data : Array.isArray(data?.data) ? data.data : [];
       setItems(list);

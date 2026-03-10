@@ -29,14 +29,12 @@ export default function ChooseDate() {
   const professionalId = useAppointmentDraftStore((s) => s.professionalId);
   const setDate = useAppointmentDraftStore((s) => s.setDate);
 
-  // ✅ NUNCA navegar no render:
   useEffect(() => {
     if (!professionalId) router.replace("/client/agenda/professional");
   }, [professionalId]);
 
   const days = useMemo(() => {
     const today = new Date();
-    // ✅ próximos 7 dias (inclui hoje), bloqueia domingo
     const list = [];
     for (let i = 0; i < 7; i++) {
       const d = addDays(today, i);

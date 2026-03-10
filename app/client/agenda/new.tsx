@@ -27,7 +27,6 @@ export default function NewAppointment() {
 
   return (
     <View style={styles.root}>
-      {/* ✅ faixa branca do topo (EXATAMENTE como no Profile) */}
       <View style={{ height: insets.top, backgroundColor: "#FFF" }} />
 
       <View
@@ -38,7 +37,6 @@ export default function NewAppointment() {
           gap: 14,
         }}
       >
-        {/* Header (mesma pegada do Profile) */}
         <View style={styles.header}>
           <View style={{ flex: 1 }}>
             <Text style={styles.headerTitle}>Novo agendamento</Text>
@@ -52,7 +50,6 @@ export default function NewAppointment() {
           </View>
         </View>
 
-        {/* Card principal */}
         <View style={styles.heroCard}>
           <View style={styles.heroTopRow}>
             <View style={styles.premiumBadge}>
@@ -103,7 +100,6 @@ export default function NewAppointment() {
           </View>
         </View>
 
-        {/* Rodapé */}
         <View style={{ alignItems: "center", marginTop: 6 }}>
           <Text style={styles.footerText}>Barber-MOB • Dark Premium</Text>
         </View>

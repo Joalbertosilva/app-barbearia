@@ -46,8 +46,6 @@ export default function MyAgenda() {
   const [deletingId, setDeletingId] = useState<number | null>(null);
 
   const visibleItems = useMemo(() => {
-    // ✅ Só mostrar os scheduled (tolerante a variações)
-    // você escreveu "scheadled", então deixei bem tolerante:
     const ok = new Set(["scheduled", "schedule", "agendado", "confirmado"]);
     return items.filter((a) => ok.has(normalizeStatus(a.status)));
   }, [items]);
@@ -138,7 +136,7 @@ export default function MyAgenda() {
   async function handleCancel(id: number) {
     try {
       setDeletingId(id);
-      
+
       await api.delete(`/appointments/${id}`);
 
       setItems((prev) =>

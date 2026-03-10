@@ -23,7 +23,7 @@ export default function ClientTabsLayout() {
           backgroundColor: BG,
           borderTopColor: "#1E1E1E",
           borderTopWidth: 1,
-          height: 58 + insets.bottom,        // altura + safe area
+          height: 58 + insets.bottom,        
           paddingBottom: Math.max(insets.bottom, 10),
           paddingTop: 6,
         },

@@ -24,9 +24,9 @@ function buildDefaultSlots(): Slot[] {
     }
   };
 
-  // ✅ conforme sua regra do backend
-  pushRange(8, 12);   // 08:00..11:30
-  pushRange(14, 18);  // 14:00..17:30
+  
+  pushRange(8, 12);   
+  pushRange(14, 18);  
 
   return slots;
 }
