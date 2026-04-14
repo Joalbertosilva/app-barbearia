@@ -1,11 +1,21 @@
 import React, { useMemo } from "react";
-import { View, Text, StyleSheet, Pressable, Image, ScrollView,} from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Pressable,
+  Image,
+  ScrollView,
+} from "react-native";
 import { router } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
+
 import { useAuthStore } from "@/src/store/auth.store";
 import { logout } from "@/src/services/api/auth";
+import { useCartStore } from "@/src/store/cart.store";
+import { useProfileStore } from "@/src/store/profile.store";
 
 type StatCardProps = {
   title: string;
@@ -99,13 +109,16 @@ export default function Profile() {
   const user = useAuthStore((s) => s.user);
   const clearAuth = useAuthStore((s) => s.clearAuth);
 
+  const cartItems = useCartStore((s) => s.itemsCount());
+  const avatarUri = useProfileStore((s) => s.avatarUri);
+
   const stats = useMemo(
     () => ({
       appointments: 0,
-      cartItems: 0,
+      cartItems,
       purchases: 0,
     }),
-    []
+    [cartItems]
   );
 
   async function handleLogout() {
@@ -118,6 +131,10 @@ export default function Profile() {
 
   function goHome() {
     router.replace("/client");
+  }
+
+  function goProfilePhoto() {
+    router.push("/client/profile-photo");
   }
 
   return (
@@ -142,10 +159,14 @@ export default function Profile() {
           </View>
 
           <Pressable onPress={goHome} accessibilityRole="button">
-            <Image
-              source={require("../../assets/images/logo-oficial.jpg")}
-              style={styles.avatar}
-            />
+            {avatarUri ? (
+              <Image source={{ uri: avatarUri }} style={styles.avatar} />
+            ) : (
+              <Image
+                source={require("../../assets/images/logo-oficial.jpg")}
+                style={styles.avatar}
+              />
+            )}
           </Pressable>
         </View>
 
@@ -157,13 +178,13 @@ export default function Profile() {
             </View>
 
             <Pressable
-              onPress={() => {}}
+              onPress={goProfilePhoto}
               accessibilityRole="button"
-              accessibilityLabel="Editar perfil"
+              accessibilityLabel="Alterar foto de perfil"
               style={styles.editChip}
             >
-              <Ionicons name="create-outline" size={16} color="#FFF" />
-              <Text style={styles.editChipText}>Editar</Text>
+              <Ionicons name="camera-outline" size={16} color="#FFF" />
+              <Text style={styles.editChipText}>Foto</Text>
             </Pressable>
           </View>
 
@@ -186,7 +207,7 @@ export default function Profile() {
 
             <Pressable
               style={styles.quickBtn}
-              onPress={() => router.push("/client/shop")}
+              onPress={() => router.push("/client/store")}
               accessibilityRole="button"
             >
               <Ionicons name="bag" size={18} color="#FFF" />
@@ -208,19 +229,31 @@ export default function Profile() {
             title="Carrinho"
             value={`${stats.cartItems} item(ns)`}
             icon="cart"
-            onPress={() => router.push("/client/shop")}
+            onPress={() => router.push("/client/store/cart")}
           />
           <StatCard
             title="Compras"
             value={`${stats.purchases}`}
             icon="receipt"
-            onPress={() => router.push("/client/shop")}
+            onPress={() => router.push("/client/minhas-compras")}
           />
         </View>
 
         <Text style={[styles.sectionTitle, { marginTop: 18 }]}>Conta</Text>
 
         <View style={{ gap: 10 }}>
+          <RowAction
+            icon="camera"
+            label="Foto de perfil"
+            hint="Capturar ou atualizar foto"
+            onPress={goProfilePhoto}
+          />
+          <RowAction
+            icon="receipt"
+            label="Minhas compras"
+            hint="Histórico dos pedidos realizados"
+            onPress={() => router.push("/client/minhas-compras")}
+          />
           <RowAction
             icon="person-circle"
             label="Dados do perfil"
@@ -269,9 +302,9 @@ const styles = StyleSheet.create({
   headerSub: { color: TEXT_DIM, marginTop: 2, fontWeight: "700" },
 
   avatar: {
-    width: 44,
-    height: 44,
-    borderRadius: 22,
+    width: 52,
+    height: 52,
+    borderRadius: 26,
     borderWidth: 1,
     borderColor: "#2A2A2A",
     backgroundColor: "#1A1A1A",

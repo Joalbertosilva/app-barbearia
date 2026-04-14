@@ -1,31 +1,32 @@
-import React from "react";
 import { Tabs } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const GOLD = "#E0B04F";
 const BG = "#0F0F0F";
+const BORDER = "#2A2A2A";
 
-export default function ClientTabsLayout() {
-  const insets = useSafeAreaInsets();
-
+export default function ClientLayout() {
   return (
     <Tabs
       screenOptions={{
         headerShown: false,
-
-        tabBarActiveTintColor: GOLD,
-        tabBarInactiveTintColor: "#9A9A9A",
-        tabBarLabelStyle: { fontSize: 11, fontWeight: "800" },
-        tabBarIconStyle: { marginTop: 2 },
-
         tabBarStyle: {
           backgroundColor: BG,
-          borderTopColor: "#1E1E1E",
+          borderTopColor: BORDER,
           borderTopWidth: 1,
-          height: 58 + insets.bottom,        
-          paddingBottom: Math.max(insets.bottom, 10),
+          height: 70,
           paddingTop: 6,
+          paddingBottom: 8,
+        },
+        tabBarItemStyle: {
+          paddingTop: 2,
+        },
+        tabBarActiveTintColor: GOLD,
+        tabBarInactiveTintColor: "#A0A0A0",
+        tabBarLabelStyle: {
+          fontSize: 11,
+          fontWeight: "700",
+          marginTop: -2,
         },
       }}
     >
@@ -50,7 +51,7 @@ export default function ClientTabsLayout() {
       />
 
       <Tabs.Screen
-        name="shop"
+        name="store"
         options={{
           title: "Loja",
           tabBarIcon: ({ color, size }) => (
@@ -66,6 +67,20 @@ export default function ClientTabsLayout() {
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="person" size={size} color={color} />
           ),
+        }}
+      />
+
+      <Tabs.Screen
+        name="profile-photo"
+        options={{
+          href: null,
+        }}
+      />
+
+      <Tabs.Screen
+        name="minhas-compras"
+        options={{
+          href: null,
         }}
       />
     </Tabs>
