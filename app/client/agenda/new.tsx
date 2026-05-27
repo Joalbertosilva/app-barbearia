@@ -17,12 +17,11 @@ export default function NewAppointment() {
   const tabBarHeight = useBottomTabBarHeight();
 
   const params = useLocalSearchParams<{ serviceId?: string }>();
-  const setServiceId = useAppointmentDraftStore((s) => s.setServiceId);
-  const reset = useAppointmentDraftStore((s) => s.reset);
+  const startNewFlow = useAppointmentDraftStore((s) => s.startNewFlow);
 
   useEffect(() => {
-    reset();
-    if (params?.serviceId) setServiceId(Number(params.serviceId));
+    const parsedServiceId = params?.serviceId ? Number(params.serviceId) : null;
+    startNewFlow(parsedServiceId);
   }, [params?.serviceId]);
 
   return (

@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { View, Text, StyleSheet, Pressable, ActivityIndicator, ScrollView } from "react-native";
+import { View, Text, StyleSheet, Pressable, ActivityIndicator, ScrollView, Alert } from "react-native";
 import { router } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
@@ -50,12 +50,16 @@ export default function ConfirmAppointment() {
   const tabBarHeight = useBottomTabBarHeight();
 
   const serviceId = useAppointmentDraftStore((s) => s.serviceId);
+  const serviceNameDraft = useAppointmentDraftStore((s) => s.serviceName);
+  const serviceDurationDraft = useAppointmentDraftStore((s) => s.serviceDurationMinutes);
+  const servicePriceDraft = useAppointmentDraftStore((s) => s.servicePriceCents);
   const professionalId = useAppointmentDraftStore((s) => s.professionalId);
+  const professionalNameDraft = useAppointmentDraftStore((s) => s.professionalName);
   const date = useAppointmentDraftStore((s) => s.date);
   const time = useAppointmentDraftStore((s) => s.time);
   const reset = useAppointmentDraftStore((s) => s.reset);
 
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [service, setService] = useState<Service | null>(null);
   const [professional, setProfessional] = useState<Professional | null>(null);
 
@@ -71,26 +75,27 @@ export default function ConfirmAppointment() {
   }, [serviceId, professionalId, date, time]);
 
   useEffect(() => {
-    (async () => {
-      if (!serviceId || !professionalId) return;
-
-      setLoading(true);
-      setError(null);
-
+    if (!serviceId || !professionalId) return;
+    // A tela de confirmação mostra primeiro o que já foi escolhido no fluxo.
+    // Busca de API é apenas complementar, sem travar a UI.
+    let mounted = true;
+    setLoading(false);
+    void (async () => {
       try {
         const [sRes, pRes] = await Promise.all([
           api.get(`/services/${serviceId}`),
           api.get(`/professionals/${professionalId}`),
         ]);
-
+        if (!mounted) return;
         setService(sRes.data ?? null);
         setProfessional(pRes.data ?? null);
-      } catch (e: any) {
-        setError(e?.response?.data?.message ?? "Não foi possível carregar dados para confirmar.");
-      } finally {
-        setLoading(false);
+      } catch {
+        // best-effort
       }
     })();
+    return () => {
+      mounted = false;
+    };
   }, [serviceId, professionalId]);
 
   const prettyDate = useMemo(() => (date ? formatDatePtBR(date) : "-"), [date]);
@@ -111,8 +116,19 @@ export default function ConfirmAppointment() {
         starts_at: startsAtLocal, // ✅ local "YYYY-MM-DD HH:mm:ss" (evita -3h)
       });
 
-      reset();
-      router.replace("/client/agenda"); // ✅ index correto
+      // Pequena espera para feedback visual de carregamento (sem demorar demais).
+      await new Promise((resolve) => setTimeout(resolve, 500));
+      setSubmitting(false);
+      Alert.alert("Agendamento confirmado", "Seu horário foi agendado com sucesso.", [
+        {
+          text: "OK",
+          onPress: () => {
+            reset();
+            router.replace("/client/agenda");
+          },
+        },
+      ]);
+      return;
     } catch (e: any) {
       const msg = e?.response?.data?.message ?? "Erro ao confirmar agendamento.";
       const errors = e?.response?.data?.errors;
@@ -162,14 +178,28 @@ export default function ConfirmAppointment() {
               <Text style={styles.cardTitle}>Resumo</Text>
               <View style={styles.divider} />
 
-              <Row label="Serviço" value={service?.name ?? "-"} />
-              <Row label="Profissional" value={professional?.display_name ?? "-"} />
+              <Row label="Serviço" value={service?.name ?? serviceNameDraft ?? "-"} />
+              <Row
+                label="Profissional"
+                value={professional?.display_name ?? professionalNameDraft ?? "-"}
+              />
               <Row label="Data" value={prettyDate} capitalize />
               <Row label="Horário" value={time ?? "-"} />
-              <Row label="Duração" value={service?.duration_minutes ? `${service.duration_minutes} min` : "-"} />
+              <Row
+                label="Duração"
+                value={
+                  (service?.duration_minutes ?? serviceDurationDraft)
+                    ? `${service?.duration_minutes ?? serviceDurationDraft} min`
+                    : "-"
+                }
+              />
               <Row
                 label="Valor"
-                value={typeof service?.price_cents === "number" ? formatBRLFromCents(service.price_cents) : "-"}
+                value={
+                  typeof (service?.price_cents ?? servicePriceDraft) === "number"
+                    ? formatBRLFromCents((service?.price_cents ?? servicePriceDraft) as number)
+                    : "-"
+                }
               />
             </View>
 

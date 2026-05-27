@@ -182,7 +182,7 @@ export default function ClientHome() {
                     <Pressable
                       style={styles.heroBtnSecondary}
                       accessibilityRole="button"
-                      onPress={() => router.push("/client/shop")}
+                      onPress={() => router.push("/client/store")}
                     >
                       <Text style={styles.heroBtnSecondaryText}>Visitar Loja</Text>
                     </Pressable>

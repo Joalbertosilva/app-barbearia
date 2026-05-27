@@ -22,7 +22,7 @@ type Professional = {
 export default function ChooseProfessional() {
   const insets = useSafeAreaInsets();
   const tabBarHeight = useBottomTabBarHeight();
-  const setProfessionalId = useAppointmentDraftStore((s) => s.setProfessionalId);
+  const setProfessional = useAppointmentDraftStore((s) => s.setProfessional);
 
   const [loading, setLoading] = useState(true);
   const [items, setItems] = useState<Professional[]>([]);
@@ -76,7 +76,7 @@ export default function ChooseProfessional() {
                   pressed && { opacity: 0.92 }
                 ]}
                 onPress={() => {
-                  setProfessionalId(item.id);
+                  setProfessional({ id: item.id, name: item.display_name });
                   router.push("/client/agenda/date");
                 }}
               >

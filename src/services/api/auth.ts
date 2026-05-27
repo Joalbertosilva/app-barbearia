@@ -7,23 +7,23 @@ type AuthResponse = {
 };
 
 export async function login(email: string, password: string) {
-  const { data } = await api.post<AuthResponse>("/auth/login", { email, password });
-  return data;
+  const { data } = await api.post("/auth/login", { email, password });
+  return data as AuthResponse;
 }
 
 export async function register(name: string, email: string, password: string) {
-  const { data } = await api.post<AuthResponse>("/auth/register", {
+  const { data } = await api.post("/auth/register", {
     name,
     email,
     password,
     password_confirmation: password,
   });
-  return data;
+  return data as AuthResponse;
 }
 
 export async function me() {
-  const { data } = await api.get<User>("/auth/me");
-  return data;
+  const { data } = await api.get("/auth/me");
+  return data as User;
 }
 
 export async function logout() {

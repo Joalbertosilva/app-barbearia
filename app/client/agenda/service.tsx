@@ -6,6 +6,7 @@ import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
 import { api } from "@/src/services/api/api";
 import { formatBRLFromCents } from "@/src/utils/money";
+import { useAppointmentDraftStore } from "@/src/store/appointmentDraft.store";
 
 const GOLD = "#E0B04F";
 const BG = "#0F0F0F";
@@ -23,6 +24,8 @@ type Service = {
 };
 
 export default function ChooseService() {
+  const setService = useAppointmentDraftStore((s) => s.setService);
+
   const insets = useSafeAreaInsets();
   const tabBarHeight = useBottomTabBarHeight();
 
@@ -91,7 +94,16 @@ export default function ChooseService() {
 
               return (
                 <Pressable
-                  onPress={() => router.push(`/client/agenda/new?serviceId=${item.id}`)}
+                  onPress={() => {
+                    setService({
+                      id: item.id,
+                      name,
+                      durationMinutes:
+                        typeof item.duration_minutes === "number" ? item.duration_minutes : null,
+                      priceCents: typeof item.price_cents === "number" ? item.price_cents : null,
+                    });
+                    router.push(`/client/agenda/new?serviceId=${item.id}`);
+                  }}
                   style={({ pressed }) => [styles.card, pressed && { opacity: 0.92 }]}
                   accessibilityRole="button"
                 >
