@@ -42,6 +42,10 @@ const DEFAULT_SERVICES: Service[] = [
   { id: 101, name: "Corte Degradê", description: "Corte moderno com acabamento premium.", price_cents: 4500, duration_minutes: 45, is_active: true },
   { id: 102, name: "Barba Premium", description: "Modelagem completa com toalha quente.", price_cents: 3500, duration_minutes: 35, is_active: true },
   { id: 103, name: "Combo Corte + Barba", description: "Experiencia completa com finalizacao.", price_cents: 7000, duration_minutes: 70, is_active: true },
+  { id: 104, name: "Corte Tradicional", description: "Aparência clássica e acabamento preciso.", price_cents: 3800, duration_minutes: 40, is_active: true },
+  { id: 105, name: "Corte Infantil", description: "Corte confortável pensado para crianças.", price_cents: 3200, duration_minutes: 35, is_active: true },
+  { id: 106, name: "Sobrancelha Premium", description: "Modelagem elegante com toque profissional.", price_cents: 2800, duration_minutes: 25, is_active: true },
+  { id: 107, name: "Hidratação Capilar", description: "Tratamento nutritivo para fios mais saudáveis.", price_cents: 4200, duration_minutes: 50, is_active: true },
 ];
 const DEFAULT_PROFESSIONALS: Professional[] = [
   { id: 301, user_id: 0, display_name: "Carlos Ferreira", bio: "Especialista em cortes modernos e degradê.", is_active: true },

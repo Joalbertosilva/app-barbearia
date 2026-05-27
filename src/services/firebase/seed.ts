@@ -35,6 +35,38 @@ const defaultServices: Service[] = [
     duration_minutes: 70,
     is_active: true,
   },
+  {
+    id: 104,
+    name: "Corte Tradicional",
+    description: "Aparência clássica e acabamento preciso.",
+    price_cents: 3800,
+    duration_minutes: 40,
+    is_active: true,
+  },
+  {
+    id: 105,
+    name: "Corte Infantil",
+    description: "Corte confortável pensado para crianças.",
+    price_cents: 3200,
+    duration_minutes: 35,
+    is_active: true,
+  },
+  {
+    id: 106,
+    name: "Sobrancelha Premium",
+    description: "Modelagem elegante com toque profissional.",
+    price_cents: 2800,
+    duration_minutes: 25,
+    is_active: true,
+  },
+  {
+    id: 107,
+    name: "Hidratação Capilar",
+    description: "Tratamento nutritivo para fios mais saudáveis.",
+    price_cents: 4200,
+    duration_minutes: 50,
+    is_active: true,
+  },
 ];
 
 const defaultProducts: Product[] = [
