@@ -29,3 +29,8 @@ export async function me() {
 export async function logout() {
   await api.post("/auth/logout");
 }
+
+export async function forgotPassword(email: string) {
+  const { data } = await api.post("/auth/forgot-password", { email });
+  return data as { ok: boolean };
+}

@@ -1,6 +1,7 @@
 import {
   createUserWithEmailAndPassword,
   deleteUser,
+  sendPasswordResetEmail,
   signInWithEmailAndPassword,
   signOut,
 } from "firebase/auth";
@@ -443,6 +444,21 @@ export const api = {
     if (path === "/auth/logout") {
       await withTimeout(signOut(auth), FIREBASE_TIMEOUT_MS, "Timeout ao sair da conta.");
       return { data: { ok: true } };
+    }
+
+    if (path === "/auth/forgot-password") {
+      const email = String(payload?.email ?? "").trim().toLowerCase();
+      if (!email) return apiError(422, "Informe um email válido.");
+      try {
+        await withTimeout(
+          sendPasswordResetEmail(auth, email),
+          FIREBASE_TIMEOUT_MS,
+          "Timeout ao enviar email de redefinição."
+        );
+        return { data: { ok: true } };
+      } catch (err: unknown) {
+        return apiError(422, firebaseAuthMessage(err, "Não foi possível enviar o email de redefinição."));
+      }
     }
 
     if (path === "/appointments") {

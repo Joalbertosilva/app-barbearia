@@ -161,6 +161,10 @@ export default function LoginScreen() {
               )}
             </Pressable>
 
+            <Link href="/auth/forgot-password" style={styles.forgotLink}>
+              Esqueci minha senha
+            </Link>
+
             <Link href="/auth/register" style={styles.link}>
               Criar conta
             </Link>
@@ -244,5 +248,6 @@ const styles = StyleSheet.create({
   buttonDisabled: { opacity: 0.55 },
   buttonText: { fontWeight: "900", color: "#000", fontSize: 16 },
 
+  forgotLink: { color: "#D7D7D7", textAlign: "center", marginTop: 10, fontSize: 14, fontWeight: "700" },
   link: { color: GOLD, textAlign: "center", marginTop: 12, fontSize: 15, fontWeight: "800" },
 });
